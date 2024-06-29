@@ -1,0 +1,106 @@
+﻿<Window
+    Background="#A00CA0FF" 
+    x:Class="ChatApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ChatApp"
+        xmlns:viewmodel="clr-namespace:ChatClient.MVVM.ViewModel"
+        mc:Ignorable="d"
+        Title="Aldi Chat App"
+        Height="500"
+        Width="800">
+
+    <Window.DataContext>
+        <viewmodel:MainViewModel />
+    </Window.DataContext>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="150"/>
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <DockPanel>
+            <TextBox Height="25"
+            DockPanel.Dock="Top"
+            Text="Username: "
+                     FontSize="16"
+            Background="Yellow"/>
+            <TextBox Height="35"
+                     FontSize="16"
+                     DockPanel.Dock="Top"
+                     Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}"/>
+            <Button Height="35"
+                    FontSize="16"
+                    FontWeight="Bold"
+                    FontStyle="Oblique"
+                    DockPanel.Dock="Top"
+                    Content="Login" 
+                    Command="{Binding ConnectToServerCommand}"/>
+            <Button Width="150"
+                    Height="35"
+                    FontSize="16"
+                    DockPanel.Dock="Bottom"
+                    Content="New user"
+                    FontWeight="Bold"
+                    FontStyle="Oblique" HorizontalAlignment="Right"
+                    Command="{Binding NewUserCommand}"/>
+            <TextBox Height="30"
+                     FontSize="16"
+                     Background="OrangeRed"
+                     DockPanel.Dock="Top"
+                     Text="Logged in users: "/>
+            <ListView ItemsSource="{Binding Users}" Background="Orange"
+                      FontSize="16">
+
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Username}"/>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </DockPanel>
+
+        <StackPanel Grid.Column="1">
+
+            <ListView Height="300"
+                      Width="600"
+                      FontSize="16"
+                      ItemsSource="{Binding Messages}"/>
+
+            <StackPanel Orientation="Horizontal">
+                <DockPanel>
+                    <TextBox                    Height="80"                                FontSize="16"  
+                             Width="570"
+         VerticalContentAlignment="Center"
+         Text="{Binding Message, UpdateSourceTrigger=PropertyChanged}"/>
+                    <Button Width="65"
+                        FontSize="16"
+                        Content="Send"
+                        FontWeight="Bold"
+                        FontStyle="Oblique"
+                        Command="{Binding SendMessageCommand}"/>
+                </DockPanel>
+            </StackPanel>
+            <StackPanel>
+                <DockPanel Width="600"
+                           Height="50">
+                    <Button Width="70"                                  HorizontalAlignment="Left"
+                        FontSize="16"
+                        Content="Refresh"
+                        FontWeight="Bold"
+                        FontStyle="Oblique"
+                    Command="{Binding SqlRefreshCommand}"/>
+                    <Button Width="75"
+                    HorizontalAlignment="Right"
+                    FontSize="16"
+                    Content="Logoff"
+                    FontWeight="Bold"
+                    FontStyle="Oblique"
+                            Command="{Binding CloseApplicationCommand}"/>
+                </DockPanel>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Window>
